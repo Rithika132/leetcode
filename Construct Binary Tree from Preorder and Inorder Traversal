@@ -1,0 +1,32 @@
+class Solution:
+    def buildTree(self, preorder, inorder):
+        inorder_map = {}
+
+        # Store index of each value in inorder
+        for i, value in enumerate(inorder):
+            inorder_map[value] = i
+
+        self.preIndex = 0
+
+        def helper(left, right):
+            if left > right:
+                return None
+
+            # Get root from preorder
+            rootValue = preorder[self.preIndex]
+            self.preIndex += 1
+
+            root = TreeNode(rootValue)
+
+            # Find root position in inorder
+            mid = inorder_map[rootValue]
+
+            # Build left subtree
+            root.left = helper(left, mid - 1)
+
+            # Build right subtree
+            root.right = helper(mid + 1, right)
+
+            return root
+
+        return helper(0, len(inorder) - 1)
